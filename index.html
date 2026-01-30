@@ -1,36 +1,398 @@
 
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+<html lang="ko">
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NovaLaunch - Scale Faster</title>
+    <title>NovaLaunch - 차세대 랜딩페이지</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-      body {
-        font-family: 'Inter', sans-serif;
-        scroll-behavior: smooth;
-      }
-      .glass-effect {
-        background: rgba(255, 255, 255, 0.7);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-      }
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .text-gradient {
+            background: linear-gradient(to right, #4f46e5, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .faq-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .faq-item.active .faq-content {
+            max-height: 200px;
+        }
+        .faq-item.active i {
+            transform: rotate(180deg);
+        }
     </style>
-  <script type="importmap">
+<script type="importmap">
 {
   "imports": {
+    "react": "https://esm.sh/react@^19.2.4",
     "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "@google/genai": "https://esm.sh/@google/genai@^1.38.0",
     "react/": "https://esm.sh/react@^19.2.4/",
-    "react": "https://esm.sh/react@^19.2.4"
+    "@google/genai": "https://esm.sh/@google/genai@^1.38.0"
   }
 }
 </script>
 </head>
-  <body class="bg-slate-50 text-slate-900">
-    <div id="root"></div>
-  </body>
+<body class="bg-slate-50 text-slate-900">
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center">
+                        <i class="fa-solid fa-bolt text-white text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-extrabold tracking-tight text-slate-900">NovaLaunch</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#features" class="text-slate-600 hover:text-indigo-600 font-medium transition-colors">기능</a>
+                    <a href="#ai-demo" class="text-slate-600 hover:text-indigo-600 font-medium transition-colors">AI 데모</a>
+                    <a href="#pricing" class="text-slate-600 hover:text-indigo-600 font-medium transition-colors">가격</a>
+                    <a href="#faq" class="text-slate-600 hover:text-indigo-600 font-medium transition-colors">FAQ</a>
+                    <button class="bg-slate-900 text-white px-6 py-2.5 rounded-full font-semibold hover:bg-slate-800 transition-all transform hover:scale-105">
+                        시작하기
+                    </button>
+                </div>
+                <div class="md:hidden">
+                    <button id="menu-btn" class="text-slate-900">
+                        <i class="fa-solid fa-bars-staggered text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t px-4 py-6 space-y-4">
+            <a href="#features" class="block text-slate-600 font-medium">기능</a>
+            <a href="#ai-demo" class="block text-slate-600 font-medium">AI 데모</a>
+            <a href="#pricing" class="block text-slate-600 font-medium">가격</a>
+            <a href="#faq" class="block text-slate-600 font-medium">FAQ</a>
+            <button class="w-full bg-slate-900 text-white px-6 py-3 rounded-xl font-semibold">시작하기</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-100 rounded-full blur-[120px] opacity-60"></div>
+        <div class="max-w-7xl mx-auto px-4 text-center relative z-10">
+            <div class="inline-flex items-center space-x-2 bg-indigo-50 border border-indigo-100 px-4 py-1.5 rounded-full text-indigo-700 font-medium text-sm mb-8">
+                <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+                </span>
+                <span>New: AI 마케팅 엔진 V2.0 출시!</span>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-extrabold text-slate-900 tracking-tight leading-tight mb-6">
+                스타트업 성장을 <br />
+                <span class="text-gradient">가장 빠르게</span>
+            </h1>
+            <p class="max-w-2xl mx-auto text-xl text-slate-600 mb-10">
+                아이디어를 제품으로 전환하고 시장을 장악하세요. 10,000명 이상의 빌더들과 함께하고 있습니다.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <button class="w-full sm:w-auto bg-indigo-600 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-indigo-700 shadow-xl shadow-indigo-200 transition-all transform hover:-translate-y-1">
+                    무료로 시작하기 <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+                <button class="w-full sm:w-auto bg-white border-2 border-slate-200 text-slate-700 px-8 py-4 rounded-full font-bold text-lg hover:bg-slate-50 transition-all">
+                    데모 예약
+                </button>
+            </div>
+            <div class="mt-16 max-w-5xl mx-auto p-2 bg-white/50 backdrop-blur-sm border rounded-2xl shadow-2xl">
+                <img src="https://picsum.photos/seed/dashboard/1200/600" alt="Dashboard" class="rounded-xl w-full shadow-inner">
+            </div>
+        </div>
+    </header>
+
+    <!-- Features Section -->
+    <section id="features" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-indigo-600 font-bold uppercase text-sm tracking-widest mb-3">Capabilities</h2>
+                <p class="text-4xl font-extrabold text-slate-900 mb-4">성공을 위한 모든 도구</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="p-8 rounded-3xl border border-slate-100 bg-white hover:shadow-xl transition-all group">
+                    <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:bg-indigo-600 group-hover:text-white">
+                        <i class="fa-solid fa-bolt-lightning"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">초고속 배포</h3>
+                    <p class="text-slate-600">자동화된 CI/CD 파이프라인으로 단 몇 분 만에 제품을 출시하세요.</p>
+                </div>
+                <!-- Feature 2 -->
+                <div class="p-8 rounded-3xl border border-slate-100 bg-white hover:shadow-xl transition-all group">
+                    <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:bg-indigo-600 group-hover:text-white">
+                        <i class="fa-solid fa-brain"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">AI 인사이트</h3>
+                    <p class="text-slate-600">사용자 데이터를 분석하여 전환율을 높이는 자동 제안을 받으세요.</p>
+                </div>
+                <!-- Feature 3 -->
+                <div class="p-8 rounded-3xl border border-slate-100 bg-white hover:shadow-xl transition-all group">
+                    <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:bg-indigo-600 group-hover:text-white">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">철저한 보안</h3>
+                    <p class="text-slate-600">SSO, 2FA 및 위협 탐지 기능이 기본적으로 탑재되어 있습니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Generator Section -->
+    <section id="ai-demo" class="py-24 bg-slate-50">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="bg-slate-900 rounded-[2.5rem] p-8 md:p-12 text-white shadow-2xl relative overflow-hidden">
+                <div class="relative z-10 text-center mb-10">
+                    <span class="bg-indigo-500/20 text-indigo-300 px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-4 inline-block">AI Powered</span>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">마케팅 카피 생성기</h2>
+                    <p class="text-slate-400">비즈니스 유형을 입력하면 AI가 마케팅 문구를 즉시 만들어줍니다.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 relative z-10">
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-slate-300">비즈니스 유형</label>
+                        <input id="biz-input" type="text" placeholder="예: 강남의 요가 스튜디오" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-slate-300">말투(톤)</label>
+                        <select id="tone-input" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option>전문적인</option>
+                            <option>재치있는</option>
+                            <option>고급스러운</option>
+                            <option>강력한</option>
+                        </select>
+                    </div>
+                </div>
+                <button id="gen-btn" class="w-full py-4 bg-indigo-600 rounded-xl font-bold text-lg hover:bg-indigo-500 transition-all relative z-10">
+                    카피 생성하기
+                </button>
+
+                <div id="ai-result" class="hidden mt-12 p-8 bg-slate-800/50 rounded-2xl border border-slate-700 relative z-10">
+                    <div class="space-y-6">
+                        <div>
+                            <span class="text-xs font-bold uppercase text-indigo-400 mb-2 block">헤드라인</span>
+                            <p id="res-headline" class="text-2xl font-bold"></p>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold uppercase text-indigo-400 mb-2 block">서브텍스트</span>
+                            <p id="res-subheadline" class="text-slate-300 text-lg leading-relaxed"></p>
+                        </div>
+                        <button id="res-cta" class="bg-indigo-600 text-white px-6 py-2 rounded-lg font-bold"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-indigo-600 font-bold uppercase text-sm mb-3">Pricing</h2>
+                <p class="text-4xl font-extrabold text-slate-900 mb-4">합리적인 플랜</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Plan 1 -->
+                <div class="p-8 rounded-[2rem] border border-slate-100 bg-white">
+                    <h3 class="text-xl font-bold mb-2">Starter</h3>
+                    <div class="mb-8"><span class="text-4xl font-black">$0</span><span class="text-slate-500"> /월</span></div>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center text-slate-600"><i class="fa-solid fa-circle-check text-indigo-500 mr-3"></i> 프로젝트 3개</li>
+                        <li class="flex items-center text-slate-600"><i class="fa-solid fa-circle-check text-indigo-500 mr-3"></i> 기본 분석</li>
+                    </ul>
+                    <button class="w-full py-4 bg-slate-50 rounded-xl font-bold hover:bg-slate-100">시작하기</button>
+                </div>
+                <!-- Plan 2 (Popular) -->
+                <div class="p-8 rounded-[2rem] border-2 border-indigo-600 bg-white shadow-2xl relative scale-105">
+                    <span class="absolute -top-4 left-1/2 -translate-x-1/2 bg-indigo-600 text-white px-4 py-1 rounded-full text-xs font-bold uppercase">가장 인기있는</span>
+                    <h3 class="text-xl font-bold mb-2">Pro</h3>
+                    <div class="mb-8"><span class="text-4xl font-black">$49</span><span class="text-slate-500"> /월</span></div>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center text-slate-600"><i class="fa-solid fa-circle-check text-indigo-500 mr-3"></i> 무제한 프로젝트</li>
+                        <li class="flex items-center text-slate-600"><i class="fa-solid fa-circle-check text-indigo-500 mr-3"></i> 고급 AI 인사이트</li>
+                        <li class="flex items-center text-slate-600"><i class="fa-solid fa-circle-check text-indigo-500 mr-3"></i> 우선 지원</li>
+                    </ul>
+                    <button class="w-full py-4 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700">무료 체험</button>
+                </div>
+                <!-- Plan 3 -->
+                <div class="p-8 rounded-[2rem] border border-slate-100 bg-white">
+                    <h3 class="text-xl font-bold mb-2">Enterprise</h3>
+                    <div class="mb-8"><span class="text-4xl font-black">$199</span><span class="text-slate-500"> /월</span></div>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center text-slate-600"><i class="fa-solid fa-circle-check text-indigo-500 mr-3"></i> 전담 계정 매니저</li>
+                        <li class="flex items-center text-slate-600"><i class="fa-solid fa-circle-check text-indigo-500 mr-3"></i> 커스텀 통합</li>
+                    </ul>
+                    <button class="w-full py-4 bg-slate-50 rounded-xl font-bold hover:bg-slate-100">문의하기</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-24 bg-white border-t border-slate-100">
+        <div class="max-w-3xl mx-auto px-4">
+            <h2 class="text-4xl font-extrabold text-center mb-12">자주 묻는 질문</h2>
+            <div class="space-y-4">
+                <div class="faq-item border border-slate-100 rounded-2xl active">
+                    <button class="w-full text-left p-6 flex justify-between items-center outline-none">
+                        <span class="font-bold text-lg">AI 마케팅은 어떻게 작동하나요?</span>
+                        <i class="fa-solid fa-chevron-down text-indigo-600"></i>
+                    </button>
+                    <div class="faq-content">
+                        <p class="px-6 pb-6 text-slate-600">입력된 정보를 기반으로 최신 마케팅 트렌드와 성공 사례를 분석하여 최적의 카피를 생성합니다.</p>
+                    </div>
+                </div>
+                <div class="faq-item border border-slate-100 rounded-2xl">
+                    <button class="w-full text-left p-6 flex justify-between items-center outline-none">
+                        <span class="font-bold text-lg">결제 방식은 어떻게 되나요?</span>
+                        <i class="fa-solid fa-chevron-down text-indigo-600"></i>
+                    </button>
+                    <div class="faq-content">
+                        <p class="px-6 pb-6 text-slate-600">신용카드 및 다양한 해외 결제 수단을 지원하며, 언제든지 플랜을 변경하거나 취소할 수 있습니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 text-white py-20">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 text-center md:text-left">
+                <div class="col-span-1">
+                    <div class="flex items-center justify-center md:justify-start space-x-2 mb-6">
+                        <div class="w-8 h-8 bg-indigo-600 rounded flex items-center justify-center">
+                            <i class="fa-solid fa-bolt text-white"></i>
+                        </div>
+                        <span class="text-xl font-bold">NovaLaunch</span>
+                    </div>
+                    <p class="text-slate-400">당신의 성장을 응원하는 가장 강력한 플랫폼.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-6">제품</h4>
+                    <ul class="space-y-4 text-slate-400">
+                        <li><a href="#" class="hover:text-white">기능</a></li>
+                        <li><a href="#" class="hover:text-white">가격</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-6">회사</h4>
+                    <ul class="space-y-4 text-slate-400">
+                        <li><a href="#" class="hover:text-white">소개</a></li>
+                        <li><a href="#" class="hover:text-white">채용</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-6">SNS</h4>
+                    <div class="flex justify-center md:justify-start space-x-4">
+                        <a href="#" class="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-indigo-600"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#" class="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-indigo-600"><i class="fa-brands fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-20 pt-10 border-t border-slate-900 text-center text-slate-500 text-sm">
+                © 2024 NovaLaunch Inc. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script type="module">
+        import { GoogleGenAI, Type } from "@google/genai";
+
+        // Scroll Effect
+        const nav = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                nav.classList.add('glass-effect', 'shadow-sm', 'py-3');
+                nav.classList.remove('py-5');
+            } else {
+                nav.classList.remove('glass-effect', 'shadow-sm', 'py-3');
+                nav.classList.add('py-5');
+            }
+        });
+
+        // Mobile Menu Toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // FAQ Toggle
+        document.querySelectorAll('.faq-item button').forEach((btn, idx) => {
+            btn.addEventListener('click', () => {
+                const parent = btn.parentElement;
+                parent.classList.toggle('active');
+            });
+        });
+
+        // AI Copy Generation Logic
+        const genBtn = document.getElementById('gen-btn');
+        const bizInput = document.getElementById('biz-input');
+        const toneInput = document.getElementById('tone-input');
+        const resultSection = document.getElementById('ai-result');
+        const resHeadline = document.getElementById('res-headline');
+        const resSub = document.getElementById('res-subheadline');
+        const resCta = document.getElementById('res-cta');
+
+        genBtn.addEventListener('click', async () => {
+            const biz = bizInput.value.trim();
+            if (!biz) return alert('비즈니스 유형을 입력해주세요.');
+
+            genBtn.disabled = true;
+            genBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> 생성 중...';
+            
+            try {
+                // process.env.API_KEY is available in the injected environment
+                const ai = new GoogleGenAI({ apiKey: window.process?.env?.API_KEY || '' });
+                const response = await ai.models.generateContent({
+                    model: 'gemini-3-flash-preview',
+                    contents: `Generate marketing copy for: ${biz}, Tone: ${toneInput.value}. Return JSON with headline, subheadline, cta.`,
+                    config: {
+                        responseMimeType: 'application/json',
+                        responseSchema: {
+                            type: Type.OBJECT,
+                            properties: {
+                                headline: { type: Type.STRING },
+                                subheadline: { type: Type.STRING },
+                                cta: { type: Type.STRING }
+                            },
+                            required: ['headline', 'subheadline', 'cta']
+                        }
+                    }
+                });
+
+                const data = JSON.parse(response.text);
+                resHeadline.innerText = data.headline;
+                resSub.innerText = data.subheadline;
+                resCta.innerText = data.cta;
+                
+                resultSection.classList.remove('hidden');
+            } catch (error) {
+                console.error('AI Generation Error:', error);
+                alert('카피 생성 중 오류가 발생했습니다.');
+            } finally {
+                genBtn.disabled = false;
+                genBtn.innerText = '카피 생성하기';
+            }
+        });
+    </script>
+</body>
 </html>

@@ -1,4 +1,6 @@
 
+// Shared type definitions for the NovaLaunch application components
+
 export interface Feature {
   id: string;
   title: string;
@@ -23,13 +25,13 @@ export interface Testimonial {
   avatar: string;
 }
 
-export interface AICopyRequest {
-  businessType: string;
-  tone: string;
-}
-
 export interface AICopyResponse {
   headline: string;
   subheadline: string;
   cta: string;
+}
+
+export interface MarketingCopyRequest {
+  businessType: string;
+  tone: string;
 }
