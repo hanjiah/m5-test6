@@ -1,0 +1,8 @@
+{
+  "name": "NovaLaunch - Next-Gen Landing Page",
+  "description": "A high-performance, modern landing page for SaaS products, featuring AI-powered marketing copy generation and interactive UI components.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
